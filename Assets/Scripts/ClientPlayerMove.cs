@@ -2,6 +2,7 @@ using UnityEngine;
 using StarterAssets;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
+using Cinemachine;
 namespace NetcodeDemo
 {
     public class ClientPlayerMove : NetworkBehaviour
@@ -10,7 +11,7 @@ namespace NetcodeDemo
         [SerializeField] ThirdPersonController _thirdPersonController;
         [SerializeField] PlayerInput _playerInput;
 
-        //[SerializeField] Transform _cameraFollow;
+        [SerializeField] Transform _cameraFollow;
 
         private void Awake()
         {
@@ -38,6 +39,13 @@ namespace NetcodeDemo
             _playerInput.enabled = true;
             _thirdPersonController.enabled = true;
             _characterController.enabled = true;
+
+            //set cinemachine follow cam to character
+            CinemachineVirtualCamera followCam = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera as CinemachineVirtualCamera;
+            if (followCam != null) 
+            {
+                followCam.Follow = _cameraFollow;
+            }
         }
     }
 }
