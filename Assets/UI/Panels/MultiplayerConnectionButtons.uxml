@@ -1,0 +1,10 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MultiplayerConnection.uss?fileID=7433441132597879392&amp;guid=e85076a6999a84942b93e968cc49ebee&amp;type=3#MultiplayerConnection" />
+    <engine:VisualElement style="flex-grow: 1; justify-content: flex-end;">
+        <engine:VisualElement class="buttonRow">
+            <engine:Button text="Start Client" name="StartClient" class="button" />
+            <engine:Button text="Start Host" name="StartHost" class="button" />
+            <engine:Button text="Start Server" name="StartServer" class="button" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

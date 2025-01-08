@@ -1,0 +1,14 @@
+.buttonRow {
+    flex-grow: 1;
+    max-height: 10%;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+}
+
+.button {
+    flex-grow: 1;
+    max-width: 20%;
+    min-width: 10%;
+    font-size: 40px;
+}
