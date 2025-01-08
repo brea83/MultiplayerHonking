@@ -911,6 +911,7 @@ GameObject:
   - component: {fileID: 6527527683786380606}
   - component: {fileID: 3118851565899465401}
   - component: {fileID: 288922462728188507}
+  - component: {fileID: 3893578966623361502}
   m_Layer: 8
   m_Name: NetworkPlayerArmature
   m_TagString: Player
@@ -1173,7 +1174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1735035641
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1186,6 +1187,23 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &3893578966623361502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4057416138807226748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb7b4f3c27faf64f86a081c5c4b8027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  _characterController: {fileID: 5531339717450508449}
+  _thirdPersonController: {fileID: 2091651436099976449}
+  _playerInput: {fileID: 3118851565899465401}
+  _cameraFollow: {fileID: 2511991772474499554}
 --- !u!1 &4195489922864309304
 GameObject:
   m_ObjectHideFlags: 0
