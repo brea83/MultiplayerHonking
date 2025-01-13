@@ -1,5 +1,9 @@
 /*
  * 
+ *            VG
+ *                      written report 2 to 4 pages detailing game design and network solutions challenges etc
+ *          
+ * 
  * do notes here
  * 
  * area control
@@ -8,13 +12,13 @@
  * 
  *
  *      should players be able to push eachother?
- *      
+ *      ---------------------------------------------------------------
  *      Tag?
  *          1 person is IT for each team?
  *                  IT cannot take territory, other teammates can
  *                  tagging ppl builds their team?
  *                  other players are
- *                  
+ *    ----------------------------------------------------------------------------------              
  *          1 person is IT at a time
  *                  tagging a person takes their territory, and makes them it?
  *              
@@ -25,4 +29,45 @@
  *              last person to find them is next it, or random selection from players who failed to find them
  *              
  *          players should make sounds when they bump into things, maybe they join a "team" of hiders while in contact with another hider
+ */
+
+
+/*
+ * 
+ * max chaos territory tag
+ * 
+ *          MIN 2 teams
+ *              3 players
+ *              consider AI IT bots
+ *          
+ *          
+ *          player 
+ *              team
+ *              network stuff
+ *              character controller stuff
+ *              bool IsIT
+ *              
+ *          team 
+ *              players list
+ *              team color
+ *              points
+ *              
+ *          area of controll areas
+ *              current team alignment
+ *              thing to test against to take controll (time spent? points assigned from a team?)
+ *              
+ *              detect team and number of players(not IT) inside
+ *              timer for controll claim, should be short
+ *              (maybe closer to the center gives more controll points per tick?)
+ *              
+ *          gameLogic
+ *              session timer
+ *              list of teams
+ *              list of controll areas
+ *              
+ *              at end of session loop through controll areas and assign win to teams based on # of territories
+ *              
+ *              
+ *              
+ *              
  */
