@@ -5,18 +5,24 @@ namespace NetcodeDemo
     public class ColorTrigger : NetworkBehaviour
     {
         public NetworkVariable<Color> _networkColor = new NetworkVariable<Color>(Color.white);
-        private Material _instanceMaterial;
+
+        private Material _cubeMaterial;
+        private Material _childMaterial;
 
         public override void OnNetworkSpawn()
         {
             _networkColor.OnValueChanged += OnColorChanged;
-            MeshRenderer meshRender = GetComponent<MeshRenderer>();
-            if (meshRender != null)
+            MeshRenderer cubeMesh = GetComponent<MeshRenderer>();
+            if (cubeMesh != null)
             {
-                _instanceMaterial = new Material(meshRender.material);
-                meshRender.material = _instanceMaterial;
-                UpdateMaterialColor(_networkColor.Value);
+                _cubeMaterial = cubeMesh.material;
             }
+            MeshRenderer childMesh = GetComponentInChildren<MeshRenderer>();
+            if (childMesh != null) 
+            { 
+                _childMaterial = childMesh.material;
+            } 
+         
         }
         public override void OnNetworkDespawn()
         {
@@ -29,9 +35,14 @@ namespace NetcodeDemo
 
         private void UpdateMaterialColor(Color newColor)
         {
-            if(_instanceMaterial != null)
+            if(_cubeMaterial != null)
             {
-                _instanceMaterial.SetColor("_BaseColor", newColor);
+                _cubeMaterial.SetColor("_BaseColor", newColor);
+            }
+
+            if (_childMaterial != null)
+            {
+                _childMaterial.SetColor("_BaseColor", newColor);
             }
         }
 
