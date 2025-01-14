@@ -915,6 +915,7 @@ GameObject:
   - component: {fileID: 8216302032088706036}
   - component: {fileID: 6211520195743420612}
   - component: {fileID: 2614824841225693548}
+  - component: {fileID: 8050511014461673015}
   m_Layer: 8
   m_Name: NetworkPlayerArmature
   m_TagString: Player
@@ -1271,6 +1272,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &8050511014461673015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4057416138807226748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53977e75e686fb84e936f727570f5b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTeamId:
+    m_InternalValue: 0
+  IsIt:
+    m_InternalValue: 0
+  DyableMaterials:
+  - {fileID: 2100000, guid: 43714b68324cc2c409d534d9874f2a2b, type: 2}
+  - {fileID: 2100000, guid: 766fd3ff04aab4745a764d33daac86fa, type: 2}
+  - {fileID: 2100000, guid: 8b25e99361ac31d4e9ae83c46aee69ea, type: 2}
 --- !u!1 &4195489922864309304
 GameObject:
   m_ObjectHideFlags: 0
