@@ -12,3 +12,11 @@
     min-width: 10%;
     font-size: 40px;
 }
+
+.LabelHeader {
+    font-size: 30px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+}

@@ -77,5 +77,8 @@
  * LECTURE NOTES ON CLIENT-SERVER AUTHORITY ETC
  * 
  * 
+ * NetworkManager.Singleton.OnClientConnectedCallback +=    this fires when a client connects!!  needs to have a ulong clientID
+ * 
+ * when you make a new networkvariable, you can set read/write persmissions
  * 
  */
