@@ -20,7 +20,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.cinemachine": {
-      "version": "2.10.1",
+      "version": "2.10.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -121,11 +121,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.netcode.gameobjects": {
-      "version": "2.1.1",
+      "version": "2.2.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.transport": "2.3.0",
+        "com.unity.transport": "2.4.0",
         "com.unity.nuget.mono-cecil": "1.11.4"
       },
       "url": "https://packages.unity.com"
@@ -253,7 +253,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.transport": {
-      "version": "2.3.0",
+      "version": "2.4.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -273,7 +273,7 @@
       }
     },
     "com.unity.visualscripting": {
-      "version": "1.9.4",
+      "version": "1.9.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {
