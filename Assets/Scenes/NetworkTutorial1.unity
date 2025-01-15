@@ -608,6 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  Teams: []
 --- !u!4 &638216259
 Transform:
   m_ObjectHideFlags: 0

@@ -43,7 +43,7 @@ namespace TagGame
 
         private void OnTeamChanged(int oldTeam, int newTeam)
         {
-            Debug.Log("Team changed from old ID: " + oldTeam + ", to new ID: " + newTeam);
+            Debug.Log(name +"'s Team changed from old ID: " + oldTeam + ", to new ID: " + newTeam);
         }
         private void UpdateMaterialColor(Color newColor)
         {

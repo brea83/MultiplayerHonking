@@ -36,8 +36,9 @@ namespace TagGame
                 return;
             }
             GameManager game = GameManager.Instance;
-            
-            if(game != null && game.Teams.Count > 1)
+            Debug.Log("gameManager instance is: " + game);
+            Debug.Log("TeamIds count is: " + game.TeamIds.Count);
+            if(game != null && game.TeamIds.Count > 1)
             {
                 TeamData newTeam = game.LogInToTeam();
                 Debug.Log ("found team: " + newTeam.ToString());
@@ -105,9 +106,9 @@ namespace TagGame
         public void UpdateTeam(int oldId, int newId)
         {
             Team = GameManager.Instance.GetTeamById(newId);
-            
-            /*
             TeamData oldTeam = GameManager.Instance.GetTeamById(oldId);
+            Debug.Log(name + "'s Team changed from old ID: " + oldTeam + ", to new ID: " + Team);
+            /*
             ulong playerId = this.NetworkObject.OwnerClientId;
             
             if (oldTeam != null)

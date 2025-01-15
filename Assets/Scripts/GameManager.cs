@@ -1,14 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using Unity.Netcode;
 using UnityEngine;
-namespace TagGame {
+using Unity.Netcode;
+using System.Collections.Generic;
+namespace TagGame
+{
     public class GameManager : NetworkBehaviour
     {
         public static GameManager Instance;
         [SerializeField]
-        public List<TeamData> Teams = new List<TeamData>();
-        public NetworkVariable<int> NextTeamIndex = new NetworkVariable<int>();
+        private List<TeamData> Teams = new List<TeamData>();
+        public NetworkList<int> TeamIds = new NetworkList<int>();
         //public List<PlayerStats> Players {get; private set;}
         private void Awake()
         {
@@ -25,26 +25,52 @@ namespace TagGame {
             foreach (TeamData child in children)
             {
                 Teams.Add(child);
+                //AddTeamIdRpc(child.Id);
+                Debug.Log("adding " + child.name + ", Id: " + child.Id + ", to local list");
             }
+
+
         }
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            
+            if(Teams.Count > 0)
+            {
+                foreach (TeamData team in Teams)
+                {
+                    AddTeamIdRpc(team.Id);
+                    Debug.Log("adding " + team.name + ", Id: "+ team.Id+", to network list");
+                }
+            }
 
         }
         public TeamData LogInToTeam()
         {
-            TeamData nextTeam = Teams[NextTeamIndex.Value];
-            IncrementNextTeamIndexRpc();
+            int teamId = TeamIds[0];
+            TeamData nextTeam = GetTeamById(teamId);
+            IncrementNextTeamIndexRpc(teamId);
       
             return nextTeam;
         }
 
         [Rpc(SendTo.Server)]
-        public void IncrementNextTeamIndexRpc()
+        public void IncrementNextTeamIndexRpc(int oldTeamId)
         {
-            NextTeamIndex.Value = (NextTeamIndex.Value + 1) % Teams.Count;
+            if(TeamIds.Count > 0)
+            {
+                TeamIds.Remove(oldTeamId);
+                TeamIds.Add(oldTeamId);
+                //int newTeamID = TeamIds[0];
+            }
+        }
+        [Rpc(SendTo.Server)]
+        public void AddTeamIdRpc(int id)
+        {
+            if (TeamIds.Contains(id))
+            {
+                return;
+            }
+            TeamIds.Add(id);
         }
 
         public TeamData GetTeamById(int teamId)
