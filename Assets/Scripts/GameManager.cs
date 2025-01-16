@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 namespace TagGame
 {
     public class GameManager : NetworkBehaviour
@@ -51,6 +52,30 @@ namespace TagGame
             IncrementNextTeamIndexRpc(teamId);
       
             return nextTeam;
+        }
+        /*
+        private void OnClientConnect(ulong clientId)
+        {
+            if (!IsLocalClient(clientId))
+            {
+                return;
+            }
+            NetworkManager networkManager = NetworkManager.Singleton;
+            
+
+            NetworkObject localPlayer = networkManager.SpawnManager.GetLocalPlayerObject();
+            PlayerStats player = localPlayer.GetComponent<PlayerStats>();
+            if (player != null)
+            {
+                player.ChangeTeamRpc(LogInToTeam().Id);
+            }
+
+        }
+        */
+        private bool IsLocalClient(ulong clientId)
+        {
+            NetworkManager networkManager = NetworkManager.Singleton;
+            return networkManager.LocalClientId == clientId;
         }
 
         [Rpc(SendTo.Server)]

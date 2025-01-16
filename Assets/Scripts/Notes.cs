@@ -81,4 +81,8 @@
  * 
  * when you make a new networkvariable, you can set read/write persmissions
  * 
+ * using strings on network need to use fixed string types. dynamic string types are not valid
+ * 
+ * player spawning in calls a function on network manager that saves the local player object  to NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+ * 
  */

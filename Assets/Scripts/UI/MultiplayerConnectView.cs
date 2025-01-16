@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using System.Collections.Generic;
 using Unity.Netcode;
-using System;
 public class MultiplayerConnectView : MonoBehaviour
 {
     VisualElement _root;
@@ -14,7 +12,7 @@ public class MultiplayerConnectView : MonoBehaviour
     Label _healthLabel;
     Label _serverId;
     Label _clientId;
-    ulong localClientId;
+   
 
     GameObject localPlayer;
     void Start()
@@ -41,54 +39,79 @@ public class MultiplayerConnectView : MonoBehaviour
 
     private void OnClientDisconnect(ulong clientId)
     {
-        PlayerNetworkHealth networkHealth = localPlayer.GetComponent<PlayerNetworkHealth>();
-        if (networkHealth != null)
+        if(!IsLocalClient(clientId))
         {
-            networkHealth.OnHealthChanged -= OnPlayerHealthChanged;
+            return;
         }
 
+        _healthLabel.text = "Disconnected";
         _serverId.text = "Disconnected";
         _clientId.text = "Disconnected";
+        _clientStart.Flex(true);
+        _hostStart.Flex(true);
+        _serverStart.Flex(true);
+        _disconnect.Flex(false);
     }
 
     private void OnDestroy()
     {
         NetworkManager networkManager = NetworkManager.Singleton;
-        networkManager.OnClientConnectedCallback -= OnClientConnect;
-        networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
-
-        _clientStart.style.display = DisplayStyle.Flex;
-        _hostStart.style.display = DisplayStyle.Flex;
-        _serverStart.style.display = DisplayStyle.Flex;
-        _disconnect.style.display = DisplayStyle.None;
-    }
-    void OnClientConnect(ulong clientID)
-    {
-        NetworkManager networkManager = NetworkManager.Singleton;
-        IReadOnlyDictionary<ulong, NetworkClient> clients = networkManager.ConnectedClients;
-        NetworkClient client = clients[clientID];
-
-        if (client.PlayerObject.IsLocalPlayer)
+        if (networkManager != null) 
         {
-            localClientId = client.PlayerObject.OwnerClientId;
-            _clientId.text = localClientId.ToString();
-            _serverId.text = networkManager.ConnectedHostname;
-
-            SetupPlayerHealth(client);
-            _clientStart.style.display = DisplayStyle.None;
-            _hostStart.style.display = DisplayStyle.None;
-            _serverStart.style.display = DisplayStyle.None;
-            _disconnect.style.display = DisplayStyle.Flex;
+            networkManager.OnClientConnectedCallback -= OnClientConnect;
+            networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
         }
     }
-    private void SetupPlayerHealth(NetworkClient client)
+
+    void OnClientConnect(ulong clientId)
     {
-        localPlayer = client.PlayerObject.gameObject;
+
+        if (!IsLocalClient(clientId))
+        {
+            return;
+        }
+        NetworkManager networkManager = NetworkManager.Singleton;
+        NetworkObject playerObject = networkManager.SpawnManager.GetLocalPlayerObject(); 
+            
+        _clientId.text = clientId.ToString();
+        _serverId.text = networkManager.ConnectedHostname;
+
+        SetupPlayerHealth(playerObject);
+        _clientStart.Flex(false);
+        _hostStart.Flex(false);
+        _serverStart.Flex(false);
+        _disconnect.Flex(true);
+    }
+        
+    private PlayerNetworkHealth PlayerHealthSubUnSub(NetworkObject playerObject, bool subscribe) 
+    {
         PlayerNetworkHealth networkHealth = localPlayer.GetComponent<PlayerNetworkHealth>();
         if (networkHealth != null)
         {
+            if (subscribe)
+            {
+                networkHealth.OnHealthChanged += OnPlayerHealthChanged;
+            }
+            else
+            {
+                networkHealth.OnHealthChanged -= OnPlayerHealthChanged;
+            }
+        }
+        return networkHealth;
+    }
+
+    private bool IsLocalClient(ulong clientId)
+    {
+        NetworkManager networkManager = NetworkManager.Singleton;
+        return networkManager.LocalClientId == clientId;
+    }
+    private void SetupPlayerHealth(NetworkObject localPlayer)
+    {
+        
+        PlayerNetworkHealth networkHealth = PlayerHealthSubUnSub(localPlayer, true);
+        if (networkHealth != null)
+        {
             _healthLabel.text = networkHealth.GetHealth().ToString();
-            networkHealth.OnHealthChanged += OnPlayerHealthChanged;
         }
     }
     private void SetupClient(NetworkManager networkManager)
@@ -114,4 +137,5 @@ public class MultiplayerConnectView : MonoBehaviour
     {
         _healthLabel.text = newHealthValue.ToString();
     }
+
 }
