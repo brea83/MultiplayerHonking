@@ -38,7 +38,7 @@
  * 
  *          MIN 2 teams
  *              3 players
- *              consider AI IT bots
+ *              consider AI IT bots out of scope
  *          
  *          
  *          player 
@@ -48,7 +48,7 @@
  *              bool IsIT
  *              
  *          team 
- *              players list
+ *              players count
  *              team color
  *              points
  *              
@@ -67,7 +67,7 @@
  *              
  *              at end of session loop through controll areas and assign win to teams based on # of territories
  *              
- *              
+ *              game loop out of scope
  *              
  *              
  */

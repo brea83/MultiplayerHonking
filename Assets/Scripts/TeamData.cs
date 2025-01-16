@@ -5,21 +5,22 @@ using UnityEngine;
 namespace TagGame { 
     public class TeamData : NetworkBehaviour
     {
-        public int Id { get; private set; }
+        [SerializeField]
+        public bool isTeam1 = false;
         public Color Color;
 
         public NetworkVariable<int> PlayerCount = new NetworkVariable<int>();
 
         private void Awake()
         {
-            Id = name.GetHashCode();
+            //Id = name.GetHashCode();
         }
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
             //enabled = IsClient;
 
-            Debug.Log(this.name + ", ID: " + this.Id + ", has spawned into the network");
+            Debug.Log(this.name + ", has spawned into the network");
         }
 
         [Rpc(SendTo.Server)]

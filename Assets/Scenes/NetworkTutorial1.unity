@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  isTeam1: 0
   Color: {r: 1, g: 0, b: 0.86458015, a: 1}
   PlayerCount:
     m_InternalValue: 0
@@ -493,6 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  isTeam1: 0
   Color: {r: 0, g: 1, b: 0.87954664, a: 1}
   PlayerCount:
     m_InternalValue: 0
@@ -1287,7 +1289,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkColor:
     m_InternalValue: {r: 1, g: 1, b: 1, a: 1}
-  NetworkCurrentTeamId:
+  NetworkIsCurrentTeam1:
     m_InternalValue: 0
 --- !u!1001 &1221041499
 PrefabInstance:

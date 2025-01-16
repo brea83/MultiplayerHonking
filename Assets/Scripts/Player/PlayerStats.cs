@@ -9,7 +9,7 @@ namespace TagGame
     {
         [SerializeField]
         public TeamData Team { get; private set; }
-        public NetworkVariable<int> NetworkTeamId = new NetworkVariable<int>();
+        public NetworkVariable<bool> IsTeam1 = new NetworkVariable<bool>();
         public NetworkVariable<bool> IsIt = new NetworkVariable<bool>();
         //public NetworkVariable<string> Name = new NetworkVariable<string>();
         public List<Material> DyableMaterials = new List<Material>();
@@ -17,7 +17,7 @@ namespace TagGame
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            NetworkTeamId.OnValueChanged += UpdateTeam;
+            IsTeam1.OnValueChanged += UpdateTeam;
             if (!IsOwner)
             {
                 Debug.Log("Player OnNetworkSpawn that wasn't Owner, network instance ID; " + NetworkObject.GetInstanceID());
@@ -37,28 +37,18 @@ namespace TagGame
             }
             GameManager game = GameManager.Instance;
             Debug.Log("gameManager instance is: " + game);
-            Debug.Log("TeamIds count is: " + game.TeamIds.Count);
-            if(game != null && game.TeamIds.Count > 1)
+            
+            if(game != null && game.Teams.Count > 1)
             {
-                TeamData newTeam = game.LogInToTeam();
+                TeamData newTeam = game.LogInToTeam( NetworkManager.Singleton.LocalClientId);
                 Debug.Log ("found team: " + newTeam.ToString());
-                /*
-                if(newTeam.PlayerCount.Value == 0)
-                {
-                    SetItStatusRpc(true);
-                }
-                else
-                {
-                    SetItStatusRpc(false);
-                }
-                */
-                ChangeTeamRpc(newTeam.Id);
+                ChangeTeamRpc(newTeam.isTeam1);
             }
 
         }
         public override void OnNetworkDespawn()
         {
-            NetworkTeamId.OnValueChanged -= UpdateTeam;
+            IsTeam1.OnValueChanged -= UpdateTeam;
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -78,7 +68,7 @@ namespace TagGame
             {
                 if ( other.Team != this.Team)
                 {
-                    other.ChangeTeamRpc( this.Team.Id);
+                    other.ChangeTeamRpc( this.Team.isTeam1);
                     
                 }
 
@@ -98,15 +88,25 @@ namespace TagGame
             IsIt.Value = validity;
         }
         [Rpc(SendTo.Server)]
-        public void ChangeTeamRpc(int teamId)
+        public void ChangeTeamRpc(bool isTeam1)
         {
             
-            NetworkTeamId.Value = teamId;
+            IsTeam1.Value = isTeam1;
         }
-        public void UpdateTeam(int oldId, int newId)
+        public void UpdateTeam(bool oldTeamIsTeam1, bool newTeamIsTeam1)
         {
-            Team = GameManager.Instance.GetTeamById(newId);
-            TeamData oldTeam = GameManager.Instance.GetTeamById(oldId);
+            GameManager manager = GameManager.Instance;
+            TeamData oldTeam = null;
+            if (newTeamIsTeam1)
+            {
+                Team = manager.Team1;
+                oldTeam = manager.Team2;
+            }
+            else
+            {
+                Team = manager.Team2;
+                oldTeam = manager.Team1;
+            }
             Debug.Log(name + "'s Team changed from old ID: " + oldTeam + ", to new ID: " + Team);
             /*
             ulong playerId = this.NetworkObject.OwnerClientId;

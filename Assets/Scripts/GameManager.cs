@@ -8,8 +8,10 @@ namespace TagGame
     {
         public static GameManager Instance;
         [SerializeField]
-        private List<TeamData> Teams = new List<TeamData>();
-        public NetworkList<int> TeamIds = new NetworkList<int>();
+        public List<TeamData> Teams = new List<TeamData>();
+        public TeamData Team1 {  get; private set; }
+        public TeamData Team2 { get; private set; }
+        //public NetworkList<int> TeamIds = new NetworkList<int>();
         //public List<PlayerStats> Players {get; private set;}
         private void Awake()
         {
@@ -26,8 +28,15 @@ namespace TagGame
             foreach (TeamData child in children)
             {
                 Teams.Add(child);
-                //AddTeamIdRpc(child.Id);
-                Debug.Log("adding " + child.name + ", Id: " + child.Id + ", to local list");
+                if (child.isTeam1)
+                {
+                    Team1 = child;
+                }
+                else
+                {
+                    Team2 = child;
+                }
+                Debug.Log("adding " + child.name + ", to local list");
             }
 
 
@@ -35,23 +44,20 @@ namespace TagGame
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            if(Teams.Count > 0)
-            {
-                foreach (TeamData team in Teams)
-                {
-                    AddTeamIdRpc(team.Id);
-                    Debug.Log("adding " + team.name + ", Id: "+ team.Id+", to network list");
-                }
-            }
+    
 
         }
-        public TeamData LogInToTeam()
+        public TeamData LogInToTeam(ulong clientId)
         {
-            int teamId = TeamIds[0];
-            TeamData nextTeam = GetTeamById(teamId);
-            IncrementNextTeamIndexRpc(teamId);
-      
-            return nextTeam;
+            bool isEven = clientId % 2 == 0;
+            if(isEven)
+            {
+                return Team1;
+            }
+            else
+            {
+                return Team2;
+            }
         }
         /*
         private void OnClientConnect(ulong clientId)
@@ -76,35 +82,6 @@ namespace TagGame
         {
             NetworkManager networkManager = NetworkManager.Singleton;
             return networkManager.LocalClientId == clientId;
-        }
-
-        [Rpc(SendTo.Server)]
-        public void IncrementNextTeamIndexRpc(int oldTeamId)
-        {
-            if(TeamIds.Count > 0)
-            {
-                TeamIds.Remove(oldTeamId);
-                TeamIds.Add(oldTeamId);
-                //int newTeamID = TeamIds[0];
-            }
-        }
-        [Rpc(SendTo.Server)]
-        public void AddTeamIdRpc(int id)
-        {
-            if (TeamIds.Contains(id))
-            {
-                return;
-            }
-            TeamIds.Add(id);
-        }
-
-        public TeamData GetTeamById(int teamId)
-        {
-            foreach (TeamData team in Teams)
-            {
-                if(team.Id == teamId) return team;
-            }
-            return null;
         }
 
     }

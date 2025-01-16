@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using Unity.Netcode;
+using System.Collections;
+using System.Threading.Tasks;
 public class MultiplayerConnectView : MonoBehaviour
 {
     VisualElement _root;
@@ -63,7 +65,7 @@ public class MultiplayerConnectView : MonoBehaviour
         }
     }
 
-    void OnClientConnect(ulong clientId)
+     void OnClientConnect(ulong clientId)
     {
 
         if (!IsLocalClient(clientId))
@@ -71,8 +73,9 @@ public class MultiplayerConnectView : MonoBehaviour
             return;
         }
         NetworkManager networkManager = NetworkManager.Singleton;
-        NetworkObject playerObject = networkManager.SpawnManager.GetLocalPlayerObject(); 
-            
+
+        // NetworkObject playerObject = WaitToGetPlayerObject(networkManager, 3);
+        NetworkObject playerObject = networkManager.SpawnManager.GetLocalPlayerObject();
         _clientId.text = clientId.ToString();
         _serverId.text = networkManager.ConnectedHostname;
 
@@ -82,10 +85,16 @@ public class MultiplayerConnectView : MonoBehaviour
         _serverStart.Flex(false);
         _disconnect.Flex(true);
     }
-        
+    /*
+    private async NetworkObject WaitToGetPlayerObject(NetworkManager networkManager, int miliseconds)
+    {
+        Task.Delay(miliseconds);
+        return networkManager.SpawnManager.GetLocalPlayerObject();
+    }
+        */
     private PlayerNetworkHealth PlayerHealthSubUnSub(NetworkObject playerObject, bool subscribe) 
     {
-        PlayerNetworkHealth networkHealth = localPlayer.GetComponent<PlayerNetworkHealth>();
+        PlayerNetworkHealth networkHealth = playerObject.GetComponent<PlayerNetworkHealth>();
         if (networkHealth != null)
         {
             if (subscribe)

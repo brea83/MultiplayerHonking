@@ -6,7 +6,7 @@ namespace TagGame
     public class ClaimableArea : NetworkBehaviour
     {
         public NetworkVariable<Color> NetworkColor = new NetworkVariable<Color>(Color.white);
-        public NetworkVariable<int> NetworkCurrentTeamId = new NetworkVariable<int>();
+        public NetworkVariable<bool> NetworkIsCurrentTeam1 = new NetworkVariable<bool>();
 
         private Material _cubeMaterial;
         private Material _childMaterial;
@@ -15,7 +15,7 @@ namespace TagGame
         {
             base.OnNetworkSpawn();
             NetworkColor.OnValueChanged += OnColorChanged;
-            NetworkCurrentTeamId.OnValueChanged += OnTeamChanged;
+            NetworkIsCurrentTeam1.OnValueChanged += OnTeamChanged;
 
             MeshRenderer cubeMesh = GetComponent<MeshRenderer>();
             if (cubeMesh != null)
@@ -34,14 +34,14 @@ namespace TagGame
         public override void OnNetworkDespawn()
         {
             NetworkColor.OnValueChanged -= OnColorChanged;
-            NetworkCurrentTeamId.OnValueChanged -= OnTeamChanged;
+            NetworkIsCurrentTeam1.OnValueChanged -= OnTeamChanged;
         }
         private void OnColorChanged(Color oldColor, Color newColor)
         {
             UpdateMaterialColor(newColor);
         }
 
-        private void OnTeamChanged(int oldTeam, int newTeam)
+        private void OnTeamChanged(bool oldTeam, bool newTeam)
         {
             Debug.Log(name +"'s Team changed from old ID: " + oldTeam + ", to new ID: " + newTeam);
         }
@@ -67,9 +67,9 @@ namespace TagGame
                 if (player != null)
                 {
                     TeamData team = player.Team;
-                    if (team.Id != NetworkCurrentTeamId.Value)
+                    if (team.isTeam1 != NetworkIsCurrentTeam1.Value)
                     {
-                        ChangeTeamServerRpc(team.Id, team.Color);
+                        ChangeTeamServerRpc(team.isTeam1, team.Color);
                     }
                 }
                 else
@@ -88,9 +88,9 @@ namespace TagGame
             NetworkColor.Value = newColor;
         }
         [Rpc(SendTo.Server)]
-        private void ChangeTeamServerRpc(int teamId, Color newColor)
+        private void ChangeTeamServerRpc(bool isTeam1, Color newColor)
         {
-            NetworkCurrentTeamId.Value = teamId;
+            NetworkIsCurrentTeam1.Value = isTeam1;
             NetworkColor.Value = newColor;
         }
     }
