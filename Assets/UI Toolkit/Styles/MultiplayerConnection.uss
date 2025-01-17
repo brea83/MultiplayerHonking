@@ -20,3 +20,10 @@
     -unity-text-outline-width: 1px;
     -unity-text-outline-color: rgb(0, 0, 0);
 }
+
+.controlHints {
+    font-size: 26px;
+    max-width: 20%;
+    align-items: center;
+    align-content: center;
+}

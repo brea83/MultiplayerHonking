@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Unity.Netcode;
 using UnityEditor;
+using TagGame;
+using UnityEngine.Events;
 
 public class MultiplayerConnectView : MonoBehaviour
 {
@@ -13,9 +15,10 @@ public class MultiplayerConnectView : MonoBehaviour
     Button _quit;
     
     Label _healthLabel;
-    Label _serverId;
+    Label _points;
     Label _clientId;
    
+    PlayerStats _playerStats;
 
     GameObject localPlayer;
     void Start()
@@ -29,7 +32,7 @@ public class MultiplayerConnectView : MonoBehaviour
         _quit = _root.Q<Button>("Quit");
 
         _healthLabel = _root.Q<Label>("PlayerHealth");
-        _serverId = _root.Q<Label>("ServerId");
+        _points = _root.Q<Label>("Points");
         _clientId = _root.Q<Label>("ClientId");
 
         NetworkManager networkManager = NetworkManager.Singleton;
@@ -50,7 +53,7 @@ public class MultiplayerConnectView : MonoBehaviour
         }
 
         _healthLabel.text = "Disconnected";
-        _serverId.text = "Disconnected";
+        
         _clientId.text = "Disconnected";
         _clientStart.Flex(true);
         _hostStart.Flex(true);
@@ -80,7 +83,11 @@ public class MultiplayerConnectView : MonoBehaviour
         // NetworkObject playerObject = WaitToGetPlayerObject(networkManager, 3);
         NetworkObject playerObject = networkManager.SpawnManager.GetLocalPlayerObject();
         _clientId.text = clientId.ToString();
-        _serverId.text = networkManager.ConnectedHostname;
+        
+        _playerStats = playerObject.GetComponent<PlayerStats>();
+        _playerStats.OnTeamChanged += OnPlayerTeamChange;
+
+        _points.text = "Currently Disabled";
 
         SetupPlayerHealth(playerObject);
         _clientStart.Flex(false);
@@ -88,13 +95,22 @@ public class MultiplayerConnectView : MonoBehaviour
         _serverStart.Flex(false);
         _disconnect.Flex(true);
     }
-    /*
-    private async NetworkObject WaitToGetPlayerObject(NetworkManager networkManager, int miliseconds)
+    private void OnPlayerTeamChange(TeamData oldTeam, TeamData newTeam)
     {
-        Task.Delay(miliseconds);
-        return networkManager.SpawnManager.GetLocalPlayerObject();
-    }
+        Debug.Log("Local ui has registered the local player's team change from " + oldTeam + " to " + newTeam);
+        /*
+         *      turning off points read out until I read more about why this is sending so many events and how I can properly prevent adding too many points
+        if(oldTeam != null)
+        {
+            oldTeam.Points.OnValueChanged -= UpdatePoints;
+        }
+        newTeam.Points.OnValueChanged += UpdatePoints;
         */
+    }
+    private void UpdatePoints(int oldPoints, int newPoints)
+    {
+        _points.text = newPoints.ToString();
+    }
     private PlayerNetworkHealth PlayerHealthSubUnSub(NetworkObject playerObject, bool subscribe) 
     {
         PlayerNetworkHealth networkHealth = playerObject.GetComponent<PlayerNetworkHealth>();

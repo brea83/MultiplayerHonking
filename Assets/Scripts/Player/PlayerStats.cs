@@ -1,6 +1,7 @@
 using UnityEngine;
 //using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEngine.Events;
 
 namespace TagGame
 {
@@ -12,6 +13,7 @@ namespace TagGame
         public NetworkVariable<bool> IsIt = new NetworkVariable<bool>();
         [SerializeField]
         private SkinnedMeshRenderer _mesh;
+        public UnityAction<TeamData,TeamData> OnTeamChanged;
        
 
         public override void OnNetworkSpawn()
@@ -100,6 +102,7 @@ namespace TagGame
             {
                 Debug.Log(name + "'s Team changed from: NULL , to: " + Team.name);
             }
+            OnTeamChanged.Invoke(oldTeam, Team);
         }
         public void InitializeTeam(bool isStartTeam1)
         {

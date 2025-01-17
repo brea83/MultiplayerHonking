@@ -10,6 +10,7 @@ namespace TagGame {
         public Color Color;
         public List<Material> Materials = new List<Material>();
         public NetworkVariable<int> PlayerCount = new NetworkVariable<int>();
+        public NetworkVariable<int> Points = new NetworkVariable<int>();
 
         private void Awake()
         {
@@ -36,7 +37,19 @@ namespace TagGame {
                 PlayerCount.Value--;
             }
         }
-
+        [Rpc(SendTo.Server)]
+        public void AddPointRpc(ulong playerId)
+        {
+            Points.Value++;
+        }
+        [Rpc(SendTo.Server)]
+        public void RemovePointRpc(ulong playerId)
+        {
+            if (Points.Value > 0)
+            {
+                Points.Value--;
+            }
+        }
         /*
         public NetworkList<ulong> NetworkPlayersList = new NetworkList<ulong>();
         //public NetworkVariable<List<ulong>> NetworkPlayersList = new NetworkVariable<List<ulong>>();

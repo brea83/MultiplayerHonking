@@ -42,8 +42,16 @@ namespace TagGame
             UpdateMaterialColor(newColor);
         }
 
-        private void OnTeamChanged(bool oldTeam, bool newTeam)
+        private void OnTeamChanged(bool oldIsTeam1, bool newIsTeam1)
         {
+            GameManager manager = GameManager.Instance;
+            TeamData oldTeam = oldIsTeam1 ? manager.Team1 : manager.Team2;
+            TeamData newTeam = newIsTeam1 ? manager.Team1 : manager.Team2;
+            /*
+             * turning off points  until I read more about why this is sending so many events and how I can properly prevent adding too many points
+            oldTeam.RemovePointRpc(OwnerClientId);
+            newTeam.AddPointRpc(OwnerClientId);
+            */
             Debug.Log(name +"'s Team changed from old ID: " + oldTeam + ", to new ID: " + newTeam);
         }
         private void UpdateMaterialColor(Color newColor)
