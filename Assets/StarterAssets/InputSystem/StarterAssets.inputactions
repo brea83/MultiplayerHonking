@@ -239,11 +239,22 @@
                 },
                 {
                     "name": "",
+                    "id": "4c435aea-6691-4024-8c8b-44fb192c488e",
+                    "path": "<Keyboard>/rightShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cda05a84-966c-4011-a7c1-2b6c8b3d4682",
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";KeyboardMouse",
                     "action": "DebugTest",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -254,7 +265,7 @@
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "DebugTest",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -265,7 +276,7 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";KeyboardMouse",
                     "action": "Honk",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -276,7 +287,7 @@
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "Honk",
                     "isComposite": false,
                     "isPartOfComposite": false
