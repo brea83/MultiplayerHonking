@@ -1895,7 +1895,7 @@
     "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
     "m_ObjectId": "6b9979fd045340188b37de9ea39c8da1",
     "m_Id": 0,
-    "m_DisplayName": "Team1",
+    "m_DisplayName": "IsTeam1",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -3112,10 +3112,10 @@
     "m_Guid": {
         "m_GuidSerialized": "d80a400a-e392-4597-8a54-9daf2e88bd8e"
     },
-    "m_Name": "Team1",
+    "m_Name": "IsTeam1",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Team1",
-    "m_DefaultReferenceName": "_Team1",
+    "m_RefNameGeneratedByDisplayName": "IsTeam1",
+    "m_DefaultReferenceName": "_IsTeam1",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

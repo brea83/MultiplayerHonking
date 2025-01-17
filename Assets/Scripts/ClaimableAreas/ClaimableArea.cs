@@ -8,28 +8,29 @@ namespace TagGame
         public NetworkVariable<Color> NetworkColor = new NetworkVariable<Color>(Color.white);
         public NetworkVariable<bool> NetworkIsCurrentTeam1 = new NetworkVariable<bool>();
 
+        [SerializeField]
         private Material _cubeMaterial;
+        [SerializeField]
         private Material _childMaterial;
 
+        private void Awake()
+        {
+        }
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+            if (IsHost)
+            {
+                UpdateMaterialColor(Color.white);
+            } 
+            else
+            {
+                UpdateMaterialColor(NetworkColor.Value);
+            }
+
             NetworkColor.OnValueChanged += OnColorChanged;
             NetworkIsCurrentTeam1.OnValueChanged += OnTeamChanged;
-
-            MeshRenderer cubeMesh = GetComponent<MeshRenderer>();
-            if (cubeMesh != null)
-            {
-                _cubeMaterial = cubeMesh.material;
-            }
-            MeshRenderer[] childMeshes = GetComponentsInChildren<MeshRenderer>();
-            foreach (MeshRenderer child in childMeshes)
-            {
-                if (child != cubeMesh)
-                {
-                    _childMaterial = child.material;
-                }
-            }
+           
         }
         public override void OnNetworkDespawn()
         {
@@ -55,6 +56,7 @@ namespace TagGame
             if (_childMaterial != null)
             {
                 _childMaterial.SetColor("_BaseColor", newColor);
+                _childMaterial.SetColor("_EmissionColor", newColor);
             }
         }
 
@@ -67,7 +69,7 @@ namespace TagGame
                 if (player != null)
                 {
                     TeamData team = player.Team;
-                    if (team.isTeam1 != NetworkIsCurrentTeam1.Value)
+                    if (team.isTeam1 != NetworkIsCurrentTeam1.Value || NetworkColor.Value == Color.white)
                     {
                         ChangeTeamServerRpc(team.isTeam1, team.Color);
                     }
@@ -84,7 +86,7 @@ namespace TagGame
         {
             // blue for even red for odd
 
-            Color newColor = (playerId % 2 == 0) ? new Color(0, 0, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
+            Color newColor =  new Color(1, 0, 0, 0.5f);
             NetworkColor.Value = newColor;
         }
         [Rpc(SendTo.Server)]

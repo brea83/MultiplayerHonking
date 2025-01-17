@@ -1,5 +1,5 @@
 using Unity.Netcode;
-//using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TagGame { 
@@ -8,7 +8,7 @@ namespace TagGame {
         [SerializeField]
         public bool isTeam1 = false;
         public Color Color;
-
+        public List<Material> Materials = new List<Material>();
         public NetworkVariable<int> PlayerCount = new NetworkVariable<int>();
 
         private void Awake()
@@ -31,7 +31,10 @@ namespace TagGame {
         [Rpc(SendTo.Server)]
         public void RemovePlayerRpc(ulong playerId)
         {
-            PlayerCount.Value--;
+            if(PlayerCount.Value > 0)
+            {
+                PlayerCount.Value--;
+            }
         }
 
         /*

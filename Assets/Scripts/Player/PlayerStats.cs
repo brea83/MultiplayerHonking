@@ -1,6 +1,5 @@
 using UnityEngine;
-using System.Collections.Generic;
-
+//using System.Collections.Generic;
 using Unity.Netcode;
 
 namespace TagGame
@@ -11,8 +10,9 @@ namespace TagGame
         public TeamData Team { get; private set; }
         public NetworkVariable<bool> IsTeam1 = new NetworkVariable<bool>();
         public NetworkVariable<bool> IsIt = new NetworkVariable<bool>();
-        //public NetworkVariable<string> Name = new NetworkVariable<string>();
-        public List<Material> DyableMaterials = new List<Material>();
+        [SerializeField]
+        private SkinnedMeshRenderer _mesh;
+       
 
         public override void OnNetworkSpawn()
         {
@@ -23,28 +23,14 @@ namespace TagGame
                 Debug.Log("Player OnNetworkSpawn that wasn't Owner, network instance ID; " + NetworkObject.GetInstanceID());
                 return;
             }
+
             Debug.Log(this.name + ", has spawned into the network");
             
         }
 
         public void Start()
         {
-            //only use this for rpc calls to things that were placed in scene when THIS script is spawned in dynamically
-            //Debug.Log("Looking for game manager");
-            if(!IsOwner)
-            {
-                return;
-            }
-            GameManager game = GameManager.Instance;
-            Debug.Log("gameManager instance is: " + game);
-            
-            if(game != null && game.Teams.Count > 1)
-            {
-                TeamData newTeam = game.LogInToTeam( NetworkManager.Singleton.LocalClientId);
-                Debug.Log ("found team: " + newTeam.ToString());
-                ChangeTeamRpc(newTeam.isTeam1);
-            }
-
+            //start is played after on network spawn for objects that are spawned in dynamically. the opposite order is true for objects place in the scene
         }
         public override void OnNetworkDespawn()
         {
@@ -68,8 +54,7 @@ namespace TagGame
             {
                 if ( other.Team != this.Team)
                 {
-                    other.ChangeTeamRpc( this.Team.isTeam1);
-                    
+                    other.ChangeTeamRpc( this.Team.isTeam1);    
                 }
 
                 this.SetItStatusRpc(false);
@@ -77,65 +62,59 @@ namespace TagGame
             }
         }
 
-        [Rpc(SendTo.Server)]
-        public void SetNameRpc(string newName)
-        {
-           // Name.Value = newName;
-        }
+  
         [Rpc(SendTo.Server)]
         public void SetItStatusRpc(bool validity)
         {
             IsIt.Value = validity;
         }
+
         [Rpc(SendTo.Server)]
         public void ChangeTeamRpc(bool isTeam1)
         {
-            
+            Debug.Log("sending team bool change to server, IsOwner == " + IsOwner.ToString());
+            if(isTeam1 == IsTeam1.Value)
+            {
+                //this should only happen on initialization for players on team 2, because everyon's isTeam1 bool initializes at false
+                UpdateTeam(isTeam1, isTeam1);
+            }
             IsTeam1.Value = isTeam1;
         }
-        public void UpdateTeam(bool oldTeamIsTeam1, bool newTeamIsTeam1)
+        public void UpdateTeam(bool oldIsTeam1, bool newIsTeam1)
         {
             GameManager manager = GameManager.Instance;
-            TeamData oldTeam = null;
-            if (newTeamIsTeam1)
+            TeamData oldTeam = Team;
+            if(oldTeam != null)
             {
-                Team = manager.Team1;
-                oldTeam = manager.Team2;
+                //we only want to remove from the old team if there Was a previous team
+                oldTeam.RemovePlayerRpc(this.OwnerClientId);
+            }
+            
+            Team = newIsTeam1 ? manager.Team1 : manager.Team2;
+            Team.AddPlayerRpc(this.OwnerClientId);
+
+            _mesh.materials = Team.Materials.ToArray();
+
+            Debug.Log(name + "'s Team changed from: " + oldTeam.name + ", to: " + Team.name);
+        }
+        public void InitializeTeam(bool isStartTeam1)
+        {
+            GameManager manager = GameManager.Instance;
+
+            if(isStartTeam1 != IsTeam1.Value)
+            {
+                ChangeTeamRpc(isStartTeam1);
             }
             else
             {
-                Team = manager.Team2;
-                oldTeam = manager.Team1;
-            }
-            Debug.Log(name + "'s Team changed from old ID: " + oldTeam + ", to new ID: " + Team);
-            /*
-            ulong playerId = this.NetworkObject.OwnerClientId;
-            
-            if (oldTeam != null)
-            {
-                oldTeam.RemovePlayerRpc(playerId);
+                Team = isStartTeam1 ? manager.Team1 : manager.Team2;
+                Team.AddPlayerRpc(this.OwnerClientId);
             }
 
-            Team.AddPlayerRpc(playerId);
-            */
-            foreach (Material material in DyableMaterials)
-            {
-                if (material != null)
-                {
-                    material.SetColor("_BaseColor", Team.Color);
-                }
-            }
-        }
+            //Material[] newMaterials = Team.Materials.ToArray();
+            _mesh.materials = Team.Materials.ToArray();
+            Debug.Log(name + "'s Team changed from null, to " + Team.name);
 
-        public void UpdateMainColor(Color color)
-        {
-            foreach (Material material in DyableMaterials)
-            {
-                if (material != null)
-                {
-                    material.SetColor("_BaseColor", Team.Color);
-                }
-            }
         }
     }
 
