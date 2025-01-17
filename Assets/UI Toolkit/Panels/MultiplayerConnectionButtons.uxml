@@ -1,0 +1,38 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Styles/MultiplayerConnection.uss?fileID=7433441132597879392&amp;guid=e85076a6999a84942b93e968cc49ebee&amp;type=3#MultiplayerConnection" />
+    <engine:VisualElement style="flex-grow: 1; justify-content: space-between; align-content: stretch;">
+        <engine:VisualElement name="TopRow" class="buttonRow">
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row; display: flex; justify-content: center;">
+                <engine:Label text="PlayerHealth: " name="PlayerHealthLabel" data-source-type="PlayerNetworkHealth, Assembly-CSharp" class="LabelHeader" />
+                <engine:Label text="default" name="PlayerHealth" data-source-type="PlayerNetworkHealth, Assembly-CSharp" class="LabelHeader" />
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
+                <engine:Label text="Client Id: " name="ClientIdLabel" class="LabelHeader" />
+                <engine:Label text="default" name="ClientId" class="LabelHeader" />
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row; display: flex; align-content: center; justify-content: center;">
+                <engine:Label text="Areas controlled by your team: " name="PointsLabel" class="LabelHeader" />
+                <engine:Label text="default" name="Points" double-click-selects-word="false" class="LabelHeader" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="ControlHints" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
+            <engine:VisualElement class="controlHints" style="flex-grow: 1;">
+                <engine:Label text="GamePad" name="GamepadHeader" class="LabelHeader" />
+                <engine:Label text="Honk: east face button" name="HonkPad" class="LabelHeader" />
+                <engine:Label text="Sprint: left stick" name="Sprint" class="LabelHeader" />
+            </engine:VisualElement>
+            <engine:VisualElement class="controlHints" style="flex-grow: 1;">
+                <engine:Label text="Keyboard" name="KeyboardHeader" class="LabelHeader" />
+                <engine:Label text="Honk: E" name="HonkKey" class="LabelHeader" />
+                <engine:Label text="Sprint: shift" name="Sprint" class="LabelHeader" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="BottomRow" class="buttonRow">
+            <engine:Button text="Start Client" name="StartClient" class="button" />
+            <engine:Button text="Start Host" name="StartHost" class="button" />
+            <engine:Button text="Start Server" name="StartServer" class="button" />
+            <engine:Button text="Disconnect" name="Disconnect" class="button" style="display: none;" />
+            <engine:Button text="Quit" name="Quit" class="button" style="display: flex;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
