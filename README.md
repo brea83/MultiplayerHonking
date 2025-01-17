@@ -6,12 +6,12 @@ uses unity starter assets as well as a honking sound effect from freesound.org
 
 Players can honk, walk, sprint, jump
 
-  character controller is unity's starter kit, not my work. though I did tweak how it plays footstep sound effects
-  
-  I added a honk button to the player input which plays a sound effect and causes text to display over the player's head for a moment
+      character controller is unity's starter kit, not my work. though I did tweak how it plays footstep sound effects
+      I added a honk button to the player input which plays a sound effect and causes text to display over the player's head for a moment
 
 Players claim glowing areas by walking into them. 
 
+---------------------------------------------------------------
 future plans include 
 
   lights and more sound effects
