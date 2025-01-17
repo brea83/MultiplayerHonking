@@ -84,18 +84,22 @@ namespace TagGame
         {
             GameManager manager = GameManager.Instance;
             TeamData oldTeam = Team;
-            if(oldTeam != null)
-            {
-                //we only want to remove from the old team if there Was a previous team
-                oldTeam.RemovePlayerRpc(this.OwnerClientId);
-            }
             
             Team = newIsTeam1 ? manager.Team1 : manager.Team2;
             Team.AddPlayerRpc(this.OwnerClientId);
 
             _mesh.materials = Team.Materials.ToArray();
 
-            Debug.Log(name + "'s Team changed from: " + oldTeam.name + ", to: " + Team.name);
+            if(oldTeam != null)
+            {
+                //we only want to remove from the old team if there Was a previous team
+                oldTeam.RemovePlayerRpc(this.OwnerClientId);
+                Debug.Log(name + "'s Team changed from: " + oldTeam.name + ", to: " + Team.name);
+            }
+            else
+            {
+                Debug.Log(name + "'s Team changed from: NULL , to: " + Team.name);
+            }
         }
         public void InitializeTeam(bool isStartTeam1)
         {

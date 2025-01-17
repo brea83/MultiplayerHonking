@@ -20,6 +20,7 @@
             <engine:Button text="Start Host" name="StartHost" class="button" />
             <engine:Button text="Start Server" name="StartServer" class="button" />
             <engine:Button text="Disconnect" name="Disconnect" class="button" style="display: none;" />
+            <engine:Button text="Quit" name="Quit" class="button" style="display: flex;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using Unity.Netcode;
+using UnityEditor;
 
 public class MultiplayerConnectView : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MultiplayerConnectView : MonoBehaviour
     Button _hostStart;
     Button _serverStart;
     Button _disconnect;
+    Button _quit;
     
     Label _healthLabel;
     Label _serverId;
@@ -24,6 +26,7 @@ public class MultiplayerConnectView : MonoBehaviour
         _hostStart = _root.Q<Button>("StartHost");
         _serverStart = _root.Q<Button>("StartServer");
         _disconnect = _root.Q<Button>("Disconnect");
+        _quit = _root.Q<Button>("Quit");
 
         _healthLabel = _root.Q<Label>("PlayerHealth");
         _serverId = _root.Q<Label>("ServerId");
@@ -36,6 +39,7 @@ public class MultiplayerConnectView : MonoBehaviour
         SetupClient(networkManager);
         SetupDisconnect(networkManager);
         SetupServer(networkManager);
+        SetupQuit(networkManager);
     }
 
     private void OnClientDisconnect(ulong clientId)
@@ -140,6 +144,21 @@ public class MultiplayerConnectView : MonoBehaviour
     private void SetupDisconnect(NetworkManager networkManager) 
     {
         _disconnect.clicked += () => networkManager.Shutdown();
+    }
+    private void SetupQuit(NetworkManager networkManager)
+    {
+        _quit.clicked += () => DoShutdown(networkManager);
+    }
+
+    private void DoShutdown(NetworkManager networkManager)
+    {
+        networkManager.Shutdown();
+        Application.Quit();
+
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#endif
+
     }
     private void OnPlayerHealthChanged(float newHealthValue)
     {
